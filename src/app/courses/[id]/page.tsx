@@ -3,8 +3,9 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 
+
 const courseData = {
-  "graphics-designing": {
+  "graphics-design": {
     title: "Graphics Designing",
     platform: "Youtube",
     image:
@@ -16,7 +17,7 @@ const courseData = {
   "python-for-beginners": {
     title: "Python for Beginners",
     platform: "Youtube",
-    image: "https://media.brightdata.com/2025/03/Data-Analysis-With-Python.svg",
+    image: "https://cdn.sanity.io/images/f3hh12vm/production/4296312097ba5a7ac113abb6e2b68449362ab0c0-612x408.jpg",
     link: "https://youtu.be/UrsmFxEIp5k",
     description:
       "Master the basics of Python programming — from variables to loops — and start your coding journey with confidence.",
@@ -30,6 +31,43 @@ const courseData = {
     description:
       "Understand how to build, optimize, and grow digital marketing campaigns with SEO, content strategy, and social media marketing.",
   },
+  "adobe-premiere-pro": {
+    title: "Adobe Premiere Pro",
+    platform: "Youtube",
+    image:
+      "https://cdn.sanity.io/images/f3hh12vm/production/f7fe9442715ea2c6c3159cca705ff2a1dc163f3a-1742x980.jpg",
+    link: "https://www.coursera.org/projects/adobe-premiere-pro-for-beginners-quickstart-video-editing",
+    description:
+      "Learn how to edit, enhance, and produce professional-quality videos using Adobe Premiere Pro with advanced techniques in cutting, color grading, transitions, and audio design.",
+  },
+  "cyber-security": {
+    title: "Cyber Security",
+    platform: "Coursera",
+    image: "https://cdn.sanity.io/images/f3hh12vm/production/264d1fb6ae09db2b726d8c4ebc65897e892e09b1-600x343.webp",
+    link: "https://www.coursera.org/professional-certificates/google-cybersecurity",
+    description: "Understand how to protect digital systems by learning ethical hacking, network defense, and cybersecurity fundamentals to detect, prevent, and respond to cyber threats."
+  },
+  "machine-learning": {
+    title: "Machine Learning",
+    platform: "Coursera",
+    image: "https://cdn.sanity.io/images/f3hh12vm/production/bfbf6366f2ec41d68539900c776aad70057e9578-298x169.jpg",
+    link: "https://www.coursera.org/learn/machine-learning-with-python",
+    description: "Learn how to build, train, and deploy intelligent models using data-driven algorithms to solve real-world problems through predictive analytics and automation."
+  },
+  "openai-agents-sdk": {
+    title: "OpenAI Agents SDK",
+    platform: "Instagram",
+    image: "https://cdn.sanity.io/images/f3hh12vm/production/ed98dc9dc43db97d05ea8604d6350a7190e22513-901x508.png",
+    link: "https://www.instagram.com/p/DLqDACsMIHi/?igsh=ZTZmZjY4cWJ5NWU1",
+    description: "Learn how to build, customize, and deploy intelligent AI agents using the OpenAI Agents SDK with tools integration, reasoning capabilities, and autonomous task execution."
+  },
+  "prompt-and-context-engineering": {
+    title: "Prompt and Context Engineering",
+    platform: "Instagram",
+    image: "https://cdn.sanity.io/images/f3hh12vm/production/54b16b85ea4ecff224cd0d44e1f50360fa6e2513-823x487.png",
+    link: "https://www.instagram.com/reel/DQTiG6wjPVF/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+    description: "Master the art of designing effective prompts and context strategies to optimize AI model responses, enhance reasoning, and achieve precise, goal-oriented outputs."
+  }
 };
 
 export default function CourseDetailPage() {

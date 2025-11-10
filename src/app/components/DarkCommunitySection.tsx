@@ -8,7 +8,7 @@ const DarkCommunitySection: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <header className="mb-12 text-center">
-          <h1 className="text-4xl sm:text-5xl font-sans font-bold text-slate-900 mb-4">
+          <h1 className="text-3xl sm:text-4xl font-sans font-bold text-slate-900 mb-4">
             Join the <span className="text-blue-600">Community</span>
           </h1>
           <p className="text-base sm:text-lg text-slate-600 mt-7">
@@ -27,7 +27,7 @@ const DarkCommunitySection: React.FC = () => {
               Among 1% of Top Developers
             </p>
             <p className="text-4xl sm:text-5xl mt-5 font-extrabold text-black">
-              487
+              500+
             </p>
             <p>Stars on GitHub</p>
             <div className="flex items-center justify-center gap-4 mt-5">
@@ -78,10 +78,10 @@ const DarkCommunitySection: React.FC = () => {
           {/* Box 3 */}
           <div className="flex flex-col items-center text-center bg-white shadow-lg rounded-2xl border border-slate-200 p-8 w-full md:w-1/3">
             <p className="font-sans text-lg sm:text-xl font-bold">
-              500+ LinkedIn Followers
+              600+ LinkedIn Followers
             </p>
             <p className="text-4xl sm:text-5xl mt-5 font-extrabold text-black">
-              500+
+              600+
             </p>
             <p>LinkedIn Followers</p>
             <div className="bg-blue-600 px-5 py-2 mt-5 text-[1rem] font-sans rounded-2xl text-white hover:bg-blue-700 transition">

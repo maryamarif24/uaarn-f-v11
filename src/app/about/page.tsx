@@ -1,5 +1,6 @@
 import { FaInstagram, FaFacebook, FaLinkedin, FaTwitter } from "react-icons/fa";
 import Link from "next/link";
+import Image from "next/image";
 
 
 export default function AboutPage() {
@@ -18,6 +19,68 @@ export default function AboutPage() {
           every learner access knowledge and clarity instantly.
         </p>
       </div>
+
+      {/* Meet Our Team Section */}
+      <div className="mt-20 w-full max-w-5xl text-center mb-10">
+        <h2 className="text-4xl font-bold text-slate-900 mb-10">
+          Meet Our <span className="text-blue-600">Team</span>
+        </h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+
+          {/* Member 1 */}
+          <div className="bg-white shadow-md rounded-2xl p-6 flex flex-col items-center">
+            <Image
+              src="/team/mrym.jpeg"
+              alt="Maryam"
+              width={30}
+              height={30}
+              className="w-32 h-32 rounded-full object-cover border-4 border-blue-500"
+            />
+            <h3 className="text-2xl font-semibold mt-4">Maryam</h3>
+            <p className="text-blue-600 font-medium">Founder & Managing Lead</p>
+            <p className="text-slate-600 text-sm mt-3">
+              Leads AI development, system automation, and OpenAI Agents SDK integration.
+            </p>
+          </div>
+
+          {/* Member 2 */}
+          <div className="bg-white shadow-md rounded-2xl p-6 flex flex-col items-center">
+            <Image
+              src="/team/mehak.jpg"
+              alt="Mehak"
+              width={30}
+              height={30}
+              className="w-32 h-32 rounded-full object-cover border-4 border-blue-500"
+            />
+            <h3 className="text-2xl font-semibold mt-4">Mehak Akram</h3>
+            <p className="text-blue-600 font-medium">Co-Founder & Backend Lead</p>
+            <p className="text-slate-600 text-sm mt-3">
+              Manages backend architecture, APIs, databases, and system reliability.
+            </p>
+          </div>
+
+          {/* Member 3 */}
+          <div className="bg-white shadow-md rounded-2xl p-6 flex flex-col items-center">
+            <Image
+              src="/team/tahira.jpg"
+              alt="Member 3"
+              width={30}
+              height={30}
+              className="w-32 h-32 rounded-full object-cover border-4 border-blue-500"
+            />
+            <h3 className="text-2xl font-semibold mt-4">Tahirah Roohi</h3>
+            <p className="text-blue-600 font-medium">Co-Founder & Frontend Lead</p>
+            <p className="text-slate-600 text-sm mt-3">
+              Designs modern interfaces and improves user experience for the platform.
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+
+
       <div className="flex flex-col mt-10">
         <p className="text-3xl font-bold">Follow us on <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">Social Media</span></p>
         <div className="mt-5 flex items-center justify-between gap-4">
@@ -53,7 +116,7 @@ export default function AboutPage() {
           >
             <FaLinkedin/>
           </Link>
-          </div>
+        </div>
       </div>
     </div>
   );

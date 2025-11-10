@@ -24,6 +24,7 @@ export default function Navbar() {
         <Link href="/" className="hover:text-blue-600 transition">Home</Link>
         <Link href="/about" className="hover:text-blue-600 transition">About</Link>
         <Link href="/courses" className="hover:text-blue-600 transition">Courses</Link>
+        <Link href="/ask" className="hover:text-blue-600 transition">Ask AI</Link>
         <Link href="/contact" className="hover:text-blue-600 transition">Contact</Link>
         <Link href="/role-selection" className="hover:text-blue-600 transition">Dashboard</Link>
       </div>
@@ -63,6 +64,7 @@ export default function Navbar() {
           <Link href="/" className="hover:text-blue-600" onClick={() => setOpen(false)}>Home</Link>
           <Link href="/about" className="hover:text-blue-600" onClick={() => setOpen(false)}>About</Link>
           <Link href="/courses" className="hover:text-blue-600" onClick={() => setOpen(false)}>Courses</Link>
+          <Link href="/ask" className="hover:text-blue-600" onClick={() => setOpen(false)}>Ask AI</Link>
           <Link href="/contact" className="hover:text-blue-600" onClick={() => setOpen(false)}>Contact</Link>
           <Link href="/role-selection" className="hover:text-blue-600" onClick={() => setOpen(false)}>Dashboard</Link>
 
