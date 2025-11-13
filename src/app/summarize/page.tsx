@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react"; // ✅ Added Suspense
 import { useUser, RedirectToSignIn } from "@clerk/nextjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
@@ -15,7 +15,20 @@ import {
   RotateCcw,
 } from "lucide-react";
 
+type SummarizePayload =
+  | { source: "youtube"; link: string }
+  | { source: "text"; text: string };
+
 export default function SummarizePage() {
+  return (
+    // ✅ Wrap the entire page with Suspense
+    <Suspense fallback={<div className="text-center mt-20 text-slate-500">Loading...</div>}>
+      <SummarizeContent />
+    </Suspense>
+  );
+}
+
+function SummarizeContent() {
   const { isLoaded, isSignedIn } = useUser();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -34,7 +47,7 @@ export default function SummarizePage() {
 
   const BACKEND_URL =
     process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8000";
-    
+
   useEffect(() => {
     if (isLoaded && !isSignedIn) {
       router.push("/sign-in");
@@ -69,22 +82,23 @@ export default function SummarizePage() {
       setLoading(true);
       let response;
 
-if (source === "youtube" || source === "text") {
-  let payload: any = { source };
+      if (source === "youtube" || source === "text") {
+        const payload: SummarizePayload =
+          source === "youtube"
+            ? { source: "youtube", link }
+            : { source: "text", text };
 
-  if (source === "youtube") payload.link = link;
-  if (source === "text") payload.text = text;
+        response = await fetch(`${BACKEND_URL}/summarize/api/agent/summarize`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+      }
 
-  response = await fetch(`${BACKEND_URL}/summarize/api/agent/summarize`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-}
       if (source === "upload" && file) {
         const formData = new FormData();
         formData.append("file", file);
-       response = await fetch(`${BACKEND_URL}/summarize/api/agent/upload`, {
+        response = await fetch(`${BACKEND_URL}/summarize/api/agent/upload`, {
           method: "POST",
           body: formData,
         });
@@ -99,23 +113,26 @@ if (source === "youtube" || source === "text") {
       const data = await response.json();
       setSummary(data.output);
     } catch (err: unknown) {
-        if (err instanceof Error) {
-          setError(err.message);
-        } else {
-          setError("Something went wrong");
-        }
-      } finally {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Something went wrong");
+      }
+    } finally {
       setLoading(false);
     }
   }
 
   async function handleDownload(format: "txt" | "pdf") {
     if (!summary) return;
-    const response = await fetch(`${BACKEND_URL}/summarize/api/agent/download/txt${format}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text: summary }),
-    });
+    const response = await fetch(
+      `${BACKEND_URL}/summarize/api/agent/download/${format}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: summary }),
+      }
+    );
     const blob = await response.blob();
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -161,7 +178,8 @@ if (source === "youtube" || source === "text") {
             <Sparkles className="text-blue-600" /> Summarize Your Lecture or Notes
           </h1>
           <p className="text-slate-600 text-sm max-w-2xl mx-auto">
-            Upload a transcript, paste notes, or share a YouTube lecture link — let AI generate a concise and clear summary for you.
+            Upload a transcript, paste notes, or share a YouTube lecture link —
+            let AI generate a concise and clear summary for you.
           </p>
         </div>
 
