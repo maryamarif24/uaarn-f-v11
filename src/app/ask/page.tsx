@@ -16,7 +16,7 @@ export default function AskPage() {
     const USER_ID = "demo-user";
     const USER_NAME = "";
 
-    // Simple formatting function (Can be expanded if the AI provides Markdown)
+
     const formatResponse = (text: string) => {
         return text
             .replace(/\n/g, '<br>')
@@ -73,12 +73,13 @@ export default function AskPage() {
 
     return (
         <div className="bg-slate-50 min-h-screen">
-            <div className="max-w-4xl mx-auto px-4 pt-10 pb-20"> {/* Unified Container Style */}
+            <div className="max-w-4xl mx-auto px-4 pt-10 pb-20">
                 
-                {/* Main Chat Box: Matching AIMentor style */}
+                
+            
                 <div className="bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-200">
                     
-                    {/* Header */}
+                    
                     <div className="border-b border-slate-200 px-6 py-4 flex justify-between items-center bg-white">
                         <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
                             <Bot className="w-6 h-6 text-blue-600" />
@@ -91,7 +92,7 @@ export default function AskPage() {
                         </div>
                     </div>
 
-                    {/* Chat History Area (Scrollable) */}
+                    
                     <div className="h-[75vh] max-h-[800px] overflow-y-auto p-6 md:p-8 space-y-4">
                         {messages.length === 0 && (
                             <p className="text-center text-slate-400 mt-10">
@@ -109,11 +110,11 @@ export default function AskPage() {
                                 <div
                                     className={`max-w-[80%] px-4 py-3 rounded-xl text-sm leading-relaxed shadow-sm transition duration-150 ${
                                         msg.role === "user"
-                                            ? "bg-blue-600 text-white rounded-tr-sm" // Matched ChatBubble user style
-                                            : "bg-slate-100 text-slate-800 rounded-tl-sm" // Matched ChatBubble AI style
+                                            ? "bg-blue-600 text-white rounded-tr-sm" 
+                                            : "bg-slate-100 text-slate-800 rounded-tl-sm" 
                                     }`}
                                 >
-                                    {/* Handle errors and formatting */}
+                                    
                                     {msg.content.includes("Error:") || msg.content.includes("Network error") ? (
                                         <div className="flex items-center gap-2 text-red-600">
                                             <AlertCircle className="w-4 h-4" />
@@ -126,7 +127,7 @@ export default function AskPage() {
                             </div>
                         ))}
 
-                        {/* Loading Indicator */}
+                        
                         {loading && (
                             <div className="flex justify-start">
                                 <div className="bg-slate-100 text-slate-500 px-4 py-3 rounded-xl rounded-tl-sm text-sm animate-pulse">
@@ -134,11 +135,11 @@ export default function AskPage() {
                                 </div>
                             </div>
                         )}
-                        {/* Scroll Anchor Placeholder */}
+                        
                         <div className="pt-2" /> 
                     </div>
 
-                    {/* Input Area (Bottom docked) */}
+                    
                     <div className="border-t border-slate-200 p-4 bg-slate-50">
                         <div className="flex items-center gap-3 max-w-4xl mx-auto">
                             <input
@@ -147,14 +148,14 @@ export default function AskPage() {
                                 onChange={(e) => setInput(e.target.value)}
                                 onKeyDown={handleKeyPress}
                                 placeholder="Ask anything about your studies..."
-                                // Updated Input Styling
+                                
                                 className="flex-1 px-5 py-3 border border-slate-300 bg-white rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150"
                                 disabled={loading}
                             />
                             <button
                                 onClick={handleSend}
                                 disabled={loading || !input.trim()}
-                                // Updated Button Styling
+                                
                                 className="px-4 py-2 sm:px-4 sm:py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full transition disabled:opacity-50 shadow-md"
                             >
                                 <Send size={18} />

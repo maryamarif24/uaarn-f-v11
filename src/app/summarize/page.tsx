@@ -1,27 +1,24 @@
 "use client";
-
-import { Suspense, useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useUser, RedirectToSignIn } from "@clerk/nextjs";
 import { useRouter, useSearchParams } from "next/navigation";
+import {
+  Youtube,
+  FileUp,
+  FileText,
+  Volume2,
+  Square,
+  Download,
+  File,
+  Sparkles,
+  Brain,
+  RotateCcw,
+} from "lucide-react";
 
-
-type SummarizePayload =
-  | { source: "youtube"; link: string }
-  | { source: "text"; text: string };
-
-// ✅ Wrap page with Suspense
-export default function SummarizePageWrapper() {
-  return (
-    <Suspense>
-      <SummarizePage />
-    </Suspense>
-  );
-}
-
-function SummarizePage() {
+export default function SummarizePage() {
   const { isLoaded, isSignedIn } = useUser();
   const router = useRouter();
-  const searchParams = useSearchParams(); // ✅ now allowed inside Suspense
+  const searchParams = useSearchParams();
   const prefilledLink = (searchParams?.get("link") ?? "") as string;
 
   const [source, setSource] = useState<"youtube" | "text" | "upload">("youtube");
@@ -37,9 +34,11 @@ function SummarizePage() {
 
   const BACKEND_URL =
     process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8000";
-
+    
   useEffect(() => {
-    if (isLoaded && !isSignedIn) router.push("/sign-in");
+    if (isLoaded && !isSignedIn) {
+      router.push("/sign-in");
+    }
   }, [isLoaded, isSignedIn, router]);
 
   useEffect(() => {
@@ -68,26 +67,24 @@ function SummarizePage() {
 
     try {
       setLoading(true);
-      let response: Response | undefined = undefined;
+      let response;
 
-      if (source === "youtube" || source === "text") {
-        const payload: SummarizePayload =
-          source === "youtube"
-            ? { source: "youtube", link }
-            : { source: "text", text };
+if (source === "youtube" || source === "text") {
+  let payload: any = { source };
 
-        response = await fetch(`${BACKEND_URL}/summarize/api/agent/summarize`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-      }
+  if (source === "youtube") payload.link = link;
+  if (source === "text") payload.text = text;
 
+  response = await fetch(`${BACKEND_URL}/summarize/api/agent/summarize`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+}
       if (source === "upload" && file) {
         const formData = new FormData();
         formData.append("file", file);
-
-        response = await fetch(`${BACKEND_URL}/summarize/api/agent/upload`, {
+       response = await fetch(`${BACKEND_URL}/summarize/api/agent/upload`, {
           method: "POST",
           body: formData,
         });
@@ -102,23 +99,23 @@ function SummarizePage() {
       const data = await response.json();
       setSummary(data.output);
     } catch (err: unknown) {
-      if (err instanceof Error) setError(err.message);
-      else setError("Something went wrong");
-    } finally {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("Something went wrong");
+        }
+      } finally {
       setLoading(false);
     }
   }
 
   async function handleDownload(format: "txt" | "pdf") {
     if (!summary) return;
-    const response = await fetch(
-      `${BACKEND_URL}/summarize/api/agent/download/txt${format}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: summary }),
-      }
-    );
+    const response = await fetch(`${BACKEND_URL}/summarize/api/agent/download/txt${format}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: summary }),
+    });
     const blob = await response.blob();
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -158,7 +155,142 @@ function SummarizePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-slate-50 to-indigo-100 py-16 px-6">
-      {/* your JSX … unchanged */}
+      <div className="max-w-4xl mx-auto bg-white/80 backdrop-blur-md border border-slate-200 shadow-lg rounded-2xl p-8">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-slate-900 mb-4 flex items-center justify-center gap-2">
+            <Sparkles className="text-blue-600" /> Summarize Your Lecture or Notes
+          </h1>
+          <p className="text-slate-600 text-sm max-w-2xl mx-auto">
+            Upload a transcript, paste notes, or share a YouTube lecture link — let AI generate a concise and clear summary for you.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-3 mb-6">
+          <OptionButton active={source === "youtube"} onClick={() => setSource("youtube")}>
+            <Youtube className="w-4 h-4 mr-2" /> YouTube Link
+          </OptionButton>
+          <OptionButton active={source === "upload"} onClick={() => setSource("upload")}>
+            <FileUp className="w-4 h-4 mr-2" /> Upload File
+          </OptionButton>
+          <OptionButton active={source === "text"} onClick={() => setSource("text")}>
+            <FileText className="w-4 h-4 mr-2" /> Paste Text
+          </OptionButton>
+        </div>
+
+        <div className="mb-6 flex justify-center">
+          {source === "upload" ? (
+            <label className="block w-full max-w-3xl">
+              <input
+                type="file"
+                accept=".txt,.pdf,.docx"
+                onChange={handleFileChange}
+                className="hidden"
+                id="file-input"
+              />
+              <div
+                onClick={() => document.getElementById("file-input")?.click()}
+                className="cursor-pointer bg-slate-100 hover:bg-slate-200 border border-slate-300 px-4 py-3 rounded-lg text-slate-700 transition text-center"
+              >
+                {fileName
+                  ? `✅ Selected: ${fileName}`
+                  : "📂 Click to upload transcript (PDF, DOCX, or TXT)"}
+              </div>
+            </label>
+          ) : source === "text" ? (
+            <textarea
+              rows={6}
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              placeholder="Paste your lecture transcript or notes here..."
+              className="w-full max-w-3xl mx-auto block p-4 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-800 placeholder:text-slate-400"
+            />
+          ) : (
+            <input
+              type="url"
+              value={link}
+              onChange={(e) => setLink(e.target.value)}
+              placeholder="Paste your YouTube video link here..."
+              className="w-full max-w-3xl mx-auto block p-4 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-800 placeholder:text-slate-400"
+            />
+          )}
+        </div>
+
+        {error && (
+          <div className="text-red-600 text-sm mb-3 bg-red-50 border border-red-200 px-3 py-2 rounded-lg">
+            ⚠️ {error}
+          </div>
+        )}
+
+        <div className="flex items-center justify-center gap-3 flex-wrap">
+          <button
+            onClick={handleSummarize}
+            disabled={loading}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-medium disabled:opacity-50 transition flex items-center gap-2"
+          >
+            <Sparkles className="w-4 h-4" />
+            {loading ? "Summarizing..." : "Summarize"}
+          </button>
+
+          {summary && (
+            <>
+              {!isPlaying && (
+                <button
+                  onClick={handleTTS}
+                  className="px-5 py-2.5 rounded-lg bg-green-600 text-white hover:bg-green-700 transition font-medium flex items-center gap-2"
+                >
+                  <Volume2 className="w-4 h-4" /> Listen
+                </button>
+              )}
+              {isPlaying && (
+                <button
+                  onClick={handleStopTTS}
+                  className="px-5 py-2.5 rounded-lg bg-red-600 text-white hover:bg-red-700 transition font-medium flex items-center gap-2"
+                >
+                  <Square className="w-4 h-4" /> Stop
+                </button>
+              )}
+              <button
+                onClick={() => handleDownload("txt")}
+                className="px-5 py-2.5 rounded-lg border border-slate-300 hover:bg-slate-100 transition text-slate-700 font-medium flex items-center gap-2"
+              >
+                <Download className="w-4 h-4" /> TXT
+              </button>
+              <button
+                onClick={() => handleDownload("pdf")}
+                className="px-5 py-2.5 rounded-lg border border-slate-300 hover:bg-slate-100 transition text-slate-700 font-medium flex items-center gap-2"
+              >
+                <File className="w-4 h-4" /> PDF
+              </button>
+            </>
+          )}
+
+          <button
+            onClick={() => {
+              setLink("");
+              setText("");
+              setSummary(null);
+              setError(null);
+              setFile(null);
+              setFileName(null);
+              handleStopTTS();
+            }}
+            className="px-5 py-2.5 rounded-lg border border-slate-300 hover:bg-slate-100 transition text-slate-700 font-medium flex items-center gap-2"
+          >
+            <RotateCcw className="w-4 h-4" /> Reset
+          </button>
+        </div>
+
+        {summary && (
+          <div className="mt-8 bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200 rounded-xl p-6 shadow-inner">
+            <h3 className="font-semibold text-lg mb-3 text-slate-800 flex items-center gap-2">
+              <Brain className="w-5 h-5 text-blue-600" /> AI Summary
+            </h3>
+            <div className="text-slate-700 text-sm leading-relaxed whitespace-pre-line">
+              {summary}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

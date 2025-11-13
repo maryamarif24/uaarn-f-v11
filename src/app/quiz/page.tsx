@@ -18,18 +18,18 @@ export default function QuizPage() {
     const [topic, setTopic] = useState("");
     const [loading, setLoading] = useState(false);
 
-    const rawBackend = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
-    const BACKEND_URL = rawBackend.replace(/\/+$/, "");
+    const BACKEND_URL =
+        process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8000";
 
     const handleSend = async () => {
         if (!topic.trim()) return;
 
         setMessages((prev) => [...prev, { role: "user", content: topic }]);
-        setTopic(""); // Clear topic input immediately after sending
+        setTopic(""); 
         setLoading(true);
 
         try {
-            const res = await fetch(`${BACKEND_URL}/quiz`, {
+            const res = await fetch(`${BACKEND_URL}/quiz/`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ topic }),
@@ -59,7 +59,7 @@ export default function QuizPage() {
                 ...prev,
                 { role: "ai", content: `Error: ${String(error)}` },
             ]);
-            // alert("Error loading quiz. Check backend (see console)."); // Removed alert for cleaner UX
+
         } finally {
             setLoading(false);
         }
@@ -73,14 +73,14 @@ export default function QuizPage() {
     };
 
     return (
-        // Outer Container matches AIMentor/AskPage
+        
         <div className="bg-slate-50 min-h-screen">
             <div className="max-w-4xl mx-auto px-4 pt-10 pb-20">
                 
-                {/* Main Quiz Box: Matching AIMentor style */}
+                
                 <div className="bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-200">
                     
-                    {/* Header */}
+                    
                     <div className="border-b border-slate-200 px-6 py-4 flex justify-between items-center bg-white">
                         <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
                             <Brain className="w-6 h-6 text-blue-600" />
@@ -93,7 +93,7 @@ export default function QuizPage() {
                         </div>
                     </div>
 
-                    {/* Quiz History/Display Area (Scrollable) */}
+                    
                     <div className="h-[75vh] max-h-[800px] overflow-y-auto p-6 md:p-8 space-y-6">
                         {messages.length === 0 && (
                             <p className="text-center text-slate-400 mt-10 flex justify-center items-center gap-2">
@@ -110,14 +110,14 @@ export default function QuizPage() {
                                 <div
                                     className={`max-w-[85%] rounded-xl text-sm leading-relaxed shadow-sm transition duration-150 ${
                                         msg.role === "user"
-                                            ? "bg-blue-600 text-white rounded-tr-sm px-4 py-3" // User Bubble Style
-                                            : "bg-slate-100 text-slate-800 rounded-tl-sm p-4" // AI Container Style
+                                            ? "bg-blue-600 text-white rounded-tr-sm px-4 py-3" 
+                                            : "bg-slate-100 text-slate-800 rounded-tl-sm p-4"
                                     }`}
                                 >
                                     {msg.role === "user" ? (
                                         msg.content
                                     ) : Array.isArray(msg.content) ? (
-                                        // Renders the Quiz structure
+                                        
                                         <div className="space-y-4">
                                             <p className="text-base font-semibold text-slate-900 mb-2">
                                                 Quiz generated for:{" "}
@@ -127,7 +127,7 @@ export default function QuizPage() {
                                             </p>
                                             
                                             {msg.content.map((q, idx) => (
-                                                <div key={idx} className="border border-slate-200 rounded-xl p-4 bg-white shadow-sm"> {/* Refined Quiz Card */}
+                                                <div key={idx} className="border border-slate-200 rounded-xl p-4 bg-white shadow-sm"> 
                                                     <h3 className="font-bold text-slate-800 mb-3">
                                                         {idx + 1}. {q.question}
                                                     </h3>
@@ -149,7 +149,7 @@ export default function QuizPage() {
                                             ))}
                                         </div>
                                     ) : (
-                                        // Renders Error Messages
+                                        
                                         <div className="whitespace-pre-wrap text-slate-500 flex items-center gap-2">
                                             <AlertCircle className="w-4 h-4 text-red-600" />
                                             <span className="text-red-600">{msg.content}</span>
@@ -159,7 +159,7 @@ export default function QuizPage() {
                             </div>
                         ))}
 
-                        {/* Loading Indicator */}
+                        
                         {loading && (
                             <div className="flex justify-start">
                                 <div className="bg-slate-100 text-slate-500 px-4 py-3 rounded-xl rounded-tl-sm text-sm animate-pulse">
@@ -167,11 +167,11 @@ export default function QuizPage() {
                                 </div>
                             </div>
                         )}
-                        {/* Scroll Anchor Placeholder */}
+                       
                         <div className="pt-2" /> 
                     </div>
 
-                    {/* Input Area (Bottom docked) */}
+                    
                     <div className="border-t border-slate-200 p-4 bg-slate-50">
                         <div className="flex items-center gap-3 max-w-4xl mx-auto">
                             <input
@@ -180,14 +180,14 @@ export default function QuizPage() {
                                 onChange={(e) => setTopic(e.target.value)}
                                 onKeyDown={handleKeyPress}
                                 placeholder="Enter a topic (e.g., Photosynthesis, JavaScript Basics)"
-                                // Updated Input Styling
+                                
                                 className="flex-1 px-5 py-3 border border-slate-300 bg-white rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150"
                                 disabled={loading}
                             />
                             <button
                                 onClick={handleSend}
                                 disabled={loading || !topic.trim()}
-                                // Updated Button Styling
+                                
                                 className="px-4 py-2 sm:px-4 sm:py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full transition disabled:opacity-50 shadow-md"
                             >
                                 <Send size={18} />

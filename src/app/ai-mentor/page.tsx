@@ -11,19 +11,26 @@ interface Message {
   isUser: boolean
 }
 // ----------------------------------------
+    const BACKEND_URL =
+        process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8000";
 
 export default function AIMentor() {
   const [messages, setMessages] = useState<Message[]>([
     { 
-      text: `Hello! I'm your **AI Career Mentor**. 
+      text: `Hello! I'm your "AI Career Mentor". 
       
 I can help you with: 
-* Choose the right career path
-* Build a 90-day skill roadmap
-* Rewrite your CV & Cover Letter
-* Prepare for tough interviews
-* Strategies for starting freelancing
-
+<br/>
+🗺️ Choose the right career path
+<br/>
+🗓️ Build a 90-day skill roadmap
+<br/>
+📄 Rewrite your CV & Cover Letter
+<br/>
+🎤 Prepare for tough interviews
+<br/>
+ 🚀 Strategies for starting freelancing
+ <br/>
 Just type your question below or upload your CV to get started!`, 
       isUser: false 
     }
@@ -58,7 +65,7 @@ Just type your question below or upload your CV to get started!`,
     setLoading(true)
 
     try {
-      const res = await fetch('/careerapi/chat', {
+      const res = await fetch(`${BACKEND_URL}/careerapi/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: text })
@@ -85,7 +92,7 @@ Just type your question below or upload your CV to get started!`,
     formData.append('file', file)
 
     try {
-      const res = await fetch('/careerapi/upload-cv', {
+      const res = await fetch(`${BACKEND_URL}/careerapi/upload-cv`, {
         method: 'POST',
         body: formData
       })

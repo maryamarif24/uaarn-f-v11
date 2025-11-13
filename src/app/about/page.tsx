@@ -20,7 +20,7 @@ export default function AboutPage() {
         </p>
       </div>
 
-      {/* Meet Our Team Section */}
+      
       <div className="mt-20 w-full max-w-5xl text-center mb-10">
         <h2 className="text-4xl font-bold text-slate-900 mb-10">
           Meet Our <span className="text-blue-600">Team</span>
@@ -28,30 +28,30 @@ export default function AboutPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
 
-          {/* Member 1 */}
+          
           <div className="bg-white shadow-md rounded-2xl p-6 flex flex-col items-center">
             <Image
-              src="/team/mrym.jpeg"
+              src="/mrym.jpeg"
               alt="Maryam"
-              width={30}
-              height={30}
-              className="w-32 h-32 rounded-full object-cover border-4 border-blue-500"
+              width={110}
+              height={110}
+              className=" rounded-full object-cover border-4 border-blue-500"
             />
-            <h3 className="text-2xl font-semibold mt-4">Maryam</h3>
+            <h3 className="text-2xl font-semibold mt-4">Maryam Arif</h3>
             <p className="text-blue-600 font-medium">Founder & Managing Lead</p>
             <p className="text-slate-600 text-sm mt-3">
               Leads AI development, system automation, and OpenAI Agents SDK integration.
             </p>
           </div>
 
-          {/* Member 2 */}
+          
           <div className="bg-white shadow-md rounded-2xl p-6 flex flex-col items-center">
             <Image
-              src="/team/mehak.jpg"
+              src="/mehak.jpg"
               alt="Mehak"
-              width={30}
-              height={30}
-              className="w-32 h-32 rounded-full object-cover border-4 border-blue-500"
+              width={110}
+              height={110}
+              className=" rounded-full object-cover border-4 border-blue-500"
             />
             <h3 className="text-2xl font-semibold mt-4">Mehak Akram</h3>
             <p className="text-blue-600 font-medium">Co-Founder & Backend Lead</p>
@@ -60,14 +60,14 @@ export default function AboutPage() {
             </p>
           </div>
 
-          {/* Member 3 */}
+          
           <div className="bg-white shadow-md rounded-2xl p-6 flex flex-col items-center">
             <Image
-              src="/team/tahira.jpg"
+              src="/tahira.jpg"
               alt="Member 3"
-              width={30}
-              height={30}
-              className="w-32 h-32 rounded-full object-cover border-4 border-blue-500"
+              width={110}
+              height={110}
+              className=" rounded-full object-cover border-4 border-blue-500"
             />
             <h3 className="text-2xl font-semibold mt-4">Tahirah Roohi</h3>
             <p className="text-blue-600 font-medium">Co-Founder & Frontend Lead</p>
