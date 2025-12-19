@@ -31,7 +31,7 @@ export default function AboutPage() {
           
           <div className="bg-white shadow-md rounded-2xl p-6 flex flex-col items-center">
             <Image
-              src="/mrym.jpeg"
+              src="/maryam.jpeg"
               alt="Maryam"
               width={110}
               height={110}

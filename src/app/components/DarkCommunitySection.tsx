@@ -33,7 +33,7 @@ const DarkCommunitySection: React.FC = () => {
             <div className="flex items-center justify-center gap-4 mt-5">
               <a href="https://github.com/maryamarif24">
                 <Image
-                  src="/mrym.jpeg"
+                  src="/maryam.jpeg"
                   alt="Maryam"
                   width={50}
                   height={50}
@@ -64,7 +64,7 @@ const DarkCommunitySection: React.FC = () => {
           {/* Box 2 */}
           <div className="flex flex-col items-center text-center bg-white shadow-lg rounded-2xl border border-slate-200 p-8 w-full md:w-1/3">
             <p className="font-sans text-lg sm:text-xl font-bold">
-              +50 Satisfied Users
+              50+ Satisfied Users
             </p>
             <p className="text-4xl sm:text-5xl mt-5 font-extrabold text-black">
               50+
@@ -78,10 +78,10 @@ const DarkCommunitySection: React.FC = () => {
           {/* Box 3 */}
           <div className="flex flex-col items-center text-center bg-white shadow-lg rounded-2xl border border-slate-200 p-8 w-full md:w-1/3">
             <p className="font-sans text-lg sm:text-xl font-bold">
-              600+ LinkedIn Followers
+              1K+ LinkedIn Followers
             </p>
             <p className="text-4xl sm:text-5xl mt-5 font-extrabold text-black">
-              600+
+              1K+
             </p>
             <p>LinkedIn Followers</p>
             <div className="bg-blue-600 px-5 py-2 mt-5 text-[1rem] font-sans rounded-2xl text-white hover:bg-blue-700 transition">
