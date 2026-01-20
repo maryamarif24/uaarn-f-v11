@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef, Suspense } from "react"; // ✅ Added Suspense
+import { useState, useEffect, useRef, Suspense } from "react";
 import { useUser, RedirectToSignIn } from "@clerk/nextjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
@@ -8,8 +8,6 @@ import {
   FileText,
   Volume2,
   Square,
-  Download,
-  File,
   Sparkles,
   Brain,
   RotateCcw,
@@ -21,8 +19,7 @@ type SummarizePayload =
 
 export default function SummarizePage() {
   return (
-    // ✅ Wrap the entire page with Suspense
-    <Suspense fallback={<div className="text-center mt-20 text-slate-500">Loading...</div>}>
+    <Suspense fallback={<div className="min-h-screen bg-[#E2E2E0] flex items-center justify-center text-[#0E2931]/50 font-black uppercase tracking-widest animate-pulse">Initializing...</div>}>
       <SummarizeContent />
     </Suspense>
   );
@@ -45,8 +42,7 @@ function SummarizeContent() {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const BACKEND_URL =
-    process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8000";
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8000";
 
   useEffect(() => {
     if (isLoaded && !isSignedIn) {
@@ -61,10 +57,7 @@ function SummarizeContent() {
     }
   }, [prefilledLink]);
 
-  if (!isLoaded)
-    return (
-      <div className="text-center mt-20 text-slate-500">Loading...</div>
-    );
+  if (!isLoaded) return <div className="min-h-screen bg-[#E2E2E0] flex items-center justify-center text-[#0E2931]/50 font-black tracking-widest">LOADING...</div>;
   if (!isSignedIn) return <RedirectToSignIn />;
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -77,24 +70,17 @@ function SummarizeContent() {
   async function handleSummarize() {
     setError(null);
     setSummary(null);
-
     try {
       setLoading(true);
       let response;
-
       if (source === "youtube" || source === "text") {
-        const payload: SummarizePayload =
-          source === "youtube"
-            ? { source: "youtube", link }
-            : { source: "text", text };
-
+        const payload: SummarizePayload = source === "youtube" ? { source: "youtube", link } : { source: "text", text };
         response = await fetch(`${BACKEND_URL}/summarize/api/agent/summarize`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
       }
-
       if (source === "upload" && file) {
         const formData = new FormData();
         formData.append("file", file);
@@ -103,21 +89,16 @@ function SummarizeContent() {
           body: formData,
         });
       }
-
       if (!response) throw new Error("No response from server");
       if (!response.ok) {
         const errData = await response.json();
         throw new Error(errData.detail || "Summarization failed");
       }
-
       const data = await response.json();
       setSummary(data.output);
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("Something went wrong");
-      }
+      if (err instanceof Error) setError(err.message);
+      else setError("Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -125,14 +106,11 @@ function SummarizeContent() {
 
   async function handleDownload(format: "txt" | "pdf") {
     if (!summary) return;
-    const response = await fetch(
-      `${BACKEND_URL}/summarize/api/agent/download/${format}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: summary }),
-      }
-    );
+    const response = await fetch(`${BACKEND_URL}/summarize/api/agent/download/${format}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: summary }),
+    });
     const blob = await response.blob();
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -154,7 +132,6 @@ function SummarizeContent() {
     audioRef.current = audio;
     setIsPlaying(true);
     audio.play();
-
     audio.onended = () => {
       setIsPlaying(false);
       audioRef.current = null;
@@ -171,19 +148,18 @@ function SummarizeContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-slate-50 to-indigo-100 py-16 px-6">
-      <div className="max-w-4xl mx-auto bg-white/80 backdrop-blur-md border border-slate-200 shadow-lg rounded-2xl p-8">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-slate-900 mb-4 flex items-center justify-center gap-2">
-            <Sparkles className="text-blue-600" /> Summarize Your Lecture or Notes
+    <div className="min-h-screen bg-[#E2E2E0] py-16 px-6 selection:bg-[#861211]/20">
+      <div className="max-w-4xl mx-auto bg-white rounded-[2.5rem] shadow-2xl shadow-[#0E2931]/5 border border-[#0E2931]/5 p-8 md:p-12 transition-all duration-500">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-black text-[#0E2931] mb-6 uppercase tracking-tighter leading-none">
+            Summarize <span className="text-[#861211]">Intelligence</span>
           </h1>
-          <p className="text-slate-600 text-sm max-w-2xl mx-auto">
-            Upload a transcript, paste notes, or share a YouTube lecture link —
-            let AI generate a concise and clear summary for you.
+          <p className="text-[#0E2931]/60 text-lg font-medium italic max-w-2xl mx-auto">
+            Upload transcripts, paste notes, or share a YouTube link. Bridge the gap between complexity and total clarity.
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-3 mb-6">
+        <div className="flex flex-wrap justify-center gap-3 mb-10">
           <OptionButton active={source === "youtube"} onClick={() => setSource("youtube")}>
             <Youtube className="w-4 h-4 mr-2" /> YouTube Link
           </OptionButton>
@@ -195,32 +171,24 @@ function SummarizeContent() {
           </OptionButton>
         </div>
 
-        <div className="mb-6 flex justify-center">
+        <div className="mb-10 flex justify-center">
           {source === "upload" ? (
             <label className="block w-full max-w-3xl">
-              <input
-                type="file"
-                accept=".txt,.pdf,.docx"
-                onChange={handleFileChange}
-                className="hidden"
-                id="file-input"
-              />
+              <input type="file" accept=".txt,.pdf,.docx" onChange={handleFileChange} className="hidden" id="file-input" />
               <div
                 onClick={() => document.getElementById("file-input")?.click()}
-                className="cursor-pointer bg-slate-100 hover:bg-slate-200 border border-slate-300 px-4 py-3 rounded-lg text-slate-700 transition text-center"
+                className="cursor-pointer bg-[#E2E2E0]/30 hover:bg-[#E2E2E0]/50 border-2 border-dashed border-[#0E2931]/10 px-8 py-12 rounded-[2rem] text-[#0E2931]/60 font-black uppercase tracking-widest text-[10px] transition-all text-center"
               >
-                {fileName
-                  ? `✅ Selected: ${fileName}`
-                  : "📂 Click to upload transcript (PDF, DOCX, or TXT)"}
+                {fileName ? `✅ Dispatching: ${fileName}` : "📂 Dispatch Document (PDF, DOCX, TXT)"}
               </div>
             </label>
           ) : source === "text" ? (
             <textarea
-              rows={6}
+              rows={8}
               value={text}
               onChange={(e) => setText(e.target.value)}
               placeholder="Paste your lecture transcript or notes here..."
-              className="w-full max-w-3xl mx-auto block p-4 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-800 placeholder:text-slate-400"
+              className="w-full max-w-3xl mx-auto block p-6 bg-[#E2E2E0]/20 border border-[#0E2931]/5 rounded-[2rem] focus:ring-2 focus:ring-[#861211]/10 focus:outline-none text-[#0E2931] placeholder:text-[#0E2931]/30 font-medium leading-relaxed resize-none"
             />
           ) : (
             <input
@@ -228,107 +196,78 @@ function SummarizeContent() {
               value={link}
               onChange={(e) => setLink(e.target.value)}
               placeholder="Paste your YouTube video link here..."
-              className="w-full max-w-3xl mx-auto block p-4 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-800 placeholder:text-slate-400"
+              className="w-full max-w-3xl mx-auto block p-5 px-8 bg-[#E2E2E0]/20 border border-[#0E2931]/5 rounded-full focus:ring-2 focus:ring-[#861211]/10 focus:outline-none text-[#0E2931] placeholder:text-[#0E2931]/30 font-medium"
             />
           )}
         </div>
 
         {error && (
-          <div className="text-red-600 text-sm mb-3 bg-red-50 border border-red-200 px-3 py-2 rounded-lg">
-            ⚠️ {error}
+          <div className="text-[#861211] text-[10px] font-black uppercase tracking-widest mb-6 bg-[#861211]/5 border border-[#861211]/10 px-4 py-3 rounded-xl flex items-center gap-2">
+            <span>⚠️</span> {error}
           </div>
         )}
 
-        <div className="flex items-center justify-center gap-3 flex-wrap">
+        <div className="flex items-center justify-center gap-4 flex-wrap">
           <button
             onClick={handleSummarize}
             disabled={loading}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-medium disabled:opacity-50 transition flex items-center gap-2"
+            className="bg-[#861211] hover:bg-[#6a0e0d] text-white px-10 py-4 rounded-full font-black uppercase tracking-widest text-[10px] transition-all duration-300 shadow-xl shadow-[#861211]/20 hover:scale-105 active:scale-95 disabled:opacity-50 flex items-center gap-2"
           >
             <Sparkles className="w-4 h-4" />
-            {loading ? "Summarizing..." : "Summarize"}
+            {loading ? "Synthesizing..." : "Process Summary"}
           </button>
 
           {summary && (
-            <>
-              {!isPlaying && (
-                <button
-                  onClick={handleTTS}
-                  className="px-5 py-2.5 rounded-lg bg-green-600 text-white hover:bg-green-700 transition font-medium flex items-center gap-2"
-                >
-                  <Volume2 className="w-4 h-4" /> Listen
-                </button>
+            <div className="flex items-center gap-3 animate-fade-in">
+              {!isPlaying ? (
+                <button onClick={handleTTS} className="p-4 rounded-full bg-[#0E2931] text-white hover:bg-[#12484C] transition-all shadow-lg hover:scale-110 active:scale-95"><Volume2 size={20} /></button>
+              ) : (
+                <button onClick={handleStopTTS} className="p-4 rounded-full bg-[#861211] text-white animate-pulse transition-all shadow-lg active:scale-95"><Square size={20} /></button>
               )}
-              {isPlaying && (
-                <button
-                  onClick={handleStopTTS}
-                  className="px-5 py-2.5 rounded-lg bg-red-600 text-white hover:bg-red-700 transition font-medium flex items-center gap-2"
-                >
-                  <Square className="w-4 h-4" /> Stop
-                </button>
-              )}
-              <button
-                onClick={() => handleDownload("txt")}
-                className="px-5 py-2.5 rounded-lg border border-slate-300 hover:bg-slate-100 transition text-slate-700 font-medium flex items-center gap-2"
-              >
-                <Download className="w-4 h-4" /> TXT
-              </button>
-              <button
-                onClick={() => handleDownload("pdf")}
-                className="px-5 py-2.5 rounded-lg border border-slate-300 hover:bg-slate-100 transition text-slate-700 font-medium flex items-center gap-2"
-              >
-                <File className="w-4 h-4" /> PDF
-              </button>
-            </>
+              <div className="h-8 w-px bg-[#0E2931]/10 mx-2" />
+              <button onClick={() => handleDownload("txt")} className="px-6 py-3 rounded-full border border-[#0E2931]/10 text-[#0E2931]/40 hover:text-[#0E2931] hover:bg-[#0E2931]/5 transition-all text-[10px] font-black uppercase tracking-widest">TXT</button>
+              <button onClick={() => handleDownload("pdf")} className="px-6 py-3 rounded-full border border-[#0E2931]/10 text-[#0E2931]/40 hover:text-[#0E2931] hover:bg-[#0E2931]/5 transition-all text-[10px] font-black uppercase tracking-widest">PDF</button>
+            </div>
           )}
 
           <button
             onClick={() => {
-              setLink("");
-              setText("");
-              setSummary(null);
-              setError(null);
-              setFile(null);
-              setFileName(null);
-              handleStopTTS();
+              setLink(""); setText(""); setSummary(null); setError(null); setFile(null); setFileName(null); handleStopTTS();
             }}
-            className="px-5 py-2.5 rounded-lg border border-slate-300 hover:bg-slate-100 transition text-slate-700 font-medium flex items-center gap-2"
+            className="p-4 rounded-full border border-[#0E2931]/5 text-[#0E2931]/20 hover:text-[#861211] transition-all duration-300"
           >
-            <RotateCcw className="w-4 h-4" /> Reset
+            <RotateCcw className="w-5 h-5" />
           </button>
         </div>
 
         {summary && (
-          <div className="mt-8 bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200 rounded-xl p-6 shadow-inner">
-            <h3 className="font-semibold text-lg mb-3 text-slate-800 flex items-center gap-2">
-              <Brain className="w-5 h-5 text-blue-600" /> AI Summary
+          <div className="mt-12 bg-[#E2E2E0]/30 rounded-[2.5rem] border border-[#0E2931]/5 p-10 shadow-inner group transition-all duration-500">
+            <h3 className="font-black text-xl mb-6 text-[#0E2931] uppercase tracking-tighter flex items-center gap-3">
+              <div className="p-2 bg-white rounded-xl shadow-sm"><Brain className="w-6 h-6 text-[#861211]" /></div>
+              AI Synthesized Insight
             </h3>
-            <div className="text-slate-700 text-sm leading-relaxed whitespace-pre-line">
+            <div className="text-[#0E2931]/80 text-lg leading-relaxed whitespace-pre-line font-medium italic border-l-4 border-[#861211]/20 pl-8">
               {summary}
             </div>
           </div>
         )}
       </div>
+
+      <div className="mt-12 text-center text-[10px] font-black uppercase tracking-[0.4em] text-[#0E2931]/20">
+        UAARN Intelligence Module • Secure Encryption Operational
+      </div>
     </div>
   );
 }
 
-function OptionButton({
-  children,
-  active,
-  onClick,
-}: {
-  children: React.ReactNode;
-  active?: boolean;
-  onClick?: () => void;
-}) {
+function OptionButton({ children, active, onClick }: { children: React.ReactNode; active?: boolean; onClick?: () => void; }) {
   return (
     <button
       onClick={onClick}
-      className={`px-4 py-2 rounded-full border transition font-medium flex items-center ${
+      className={`px-6 py-3 rounded-full border transition-all text-[10px] font-black uppercase tracking-widest flex items-center ${
         active
-          ? "bg-blue-600 text-white border-blue-600 shadow-sm"
-          : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100"
+          ? "bg-[#0E2931] text-white border-[#0E2931] shadow-xl scale-105"
+          : "bg-white text-[#0E2931]/40 border-[#0E2931]/5 hover:bg-[#E2E2E0]/50 hover:text-[#0E2931]"
       }`}
     >
       {children}

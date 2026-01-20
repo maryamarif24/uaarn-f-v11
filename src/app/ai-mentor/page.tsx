@@ -5,33 +5,24 @@ import ChatInput from '../components/ChatInput'
 import LoadingDots from '../components/LoadingDots'
 import CareerSection from '../components/CareerSection'
 
-// --- Interface Definition (Kept as is) ---
 interface Message {
   text: string
   isUser: boolean
 }
-// ----------------------------------------
-    const BACKEND_URL =
-        process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8000";
+
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8000";
 
 export default function AIMentor() {
   const [messages, setMessages] = useState<Message[]>([
     { 
-      text: `Hello! I'm your "AI Career Mentor". 
-      
-I can help you with: 
-<br/>
-🗺️ Choose the right career path
-<br/>
-🗓️ Build a 90-day skill roadmap
-<br/>
-📄 Rewrite your CV & Cover Letter
-<br/>
-🎤 Prepare for tough interviews
-<br/>
- 🚀 Strategies for starting freelancing
- <br/>
-Just type your question below or upload your CV to get started!`, 
+      text: `Hello! I'm your "AI Career Mentor". <br/>
+      I can help you with:<br/>
+      🗺️ Choose the right career path<br/>
+      🗓️ Build a 90-day skill roadmap<br/>
+      📄 Rewrite your CV & Cover Letter<br/>
+      🎤 Prepare for tough interviews<br/>
+      🚀 Strategies for starting freelancing<br/>
+      Just type your question below or upload your CV to get started!`, 
       isUser: false 
     }
   ])
@@ -39,9 +30,8 @@ Just type your question below or upload your CV to get started!`,
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const scrollToBottom = () => {
-    // Scroll logic remains the same
     const container = messagesEndRef.current?.parentElement;
-    if (container && (container.scrollHeight - container.scrollTop < container.offsetHeight + 300)) {
+    if (container) {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
     }
   }
@@ -50,13 +40,12 @@ Just type your question below or upload your CV to get started!`,
     scrollToBottom()
   }, [messages])
 
-  // --- API Handlers (Kept as is) ---
   const formatResponse = (text: string) => {
     return text
       .replace(/\n/g, '<br>')
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.*?)\*/g, '<em>$1</em>')
-      .replace(/(\* |• )/g, '<li>') // Added basic list formatting for welcome message
+      .replace(/(\* |• )/g, '<li>') 
   }
 
   const sendMessage = async (text: string) => {
@@ -71,21 +60,21 @@ Just type your question below or upload your CV to get started!`,
         body: JSON.stringify({ message: text })
       })
 
-      if (!res.ok) throw new Error('Failed to get a response from the AI.')
+      if (!res.ok) throw new Error('Failed to get a response.')
 
       const data = await res.json()
       const reply = formatResponse(data.reply)
       setMessages(prev => [...prev, { text: reply, isUser: false }])
     } catch (err) {
       console.error(err);
-      setMessages(prev => [...prev, { text: "⚠️ **Connection Error:** Sorry, I'm having trouble connecting right now. Please check your network or try again.", isUser: false }])
+      setMessages(prev => [...prev, { text: "⚠️ **Connection Error:** Sorry, I'm having trouble connecting right now.", isUser: false }])
     } finally {
       setLoading(false)
     }
   }
 
   const handleFileUpload = async (file: File) => {
-    setMessages(prev => [...prev, { text: `CV Uploaded: ${file.name}. Analyzing your profile now...`, isUser: true }])
+    setMessages(prev => [...prev, { text: `CV Uploaded: ${file.name}. Analyzing...`, isUser: true }])
     setLoading(true)
 
     const formData = new FormData()
@@ -104,57 +93,67 @@ Just type your question below or upload your CV to get started!`,
       setMessages(prev => [...prev, { text: analysis, isUser: false }])
     } catch (err) {
       console.error(err);
-      setMessages(prev => [...prev, { text: "❌ **Analysis Failed:** Could not analyze your CV file. Please try uploading a PDF or copy-paste the text content into the chat.", isUser: false }])
+      setMessages(prev => [...prev, { text: "❌ **Analysis Failed:** Could not analyze your CV.", isUser: false }])
     } finally {
       setLoading(false)
     }
   }
 
-  // --- Component Structure (Enhanced UI) ---
   return (
-    // Outer container to match the site's overall look
-    <div className="bg-slate-50 min-h-screen"> 
-      {/* Career Section header remains */}
+    /* Background: Soft Bone (#E2E2E0) from your palette reference */
+    <div className="bg-[#E2E2E0] min-h-screen font-sans selection:bg-[#861211]/20"> 
       <CareerSection /> 
       
-      {/* Centered Chat Container */}
-      <div className="max-w-6xl mx-auto px-4 pt-10 pb-20">
+      <div className="max-w-5xl mx-auto px-6 pt-10 pb-24">
         
-        {/* Main Chat Box: Clean shadow, slightly rounded, and defined size */}
-        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-200">
+        {/* Main Chat Box: Pro Matrix Style using Deep Teal (#0E2931) for borders */}
+        <div className="bg-white/80 backdrop-blur-xl rounded-[2.5rem] shadow-2xl shadow-[#0E2931]/10 overflow-hidden border border-[#0E2931]/5 relative group transition-all duration-500">
           
-          {/* Chat History Area (Scrollable) */}
-          <div className="h-[75vh] max-h-[800px] overflow-y-auto p-6 md:p-8">
+          {/* Decorative Corner Accent matching your feature cards */}
+          <div className="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-[#0E2931]/10 group-hover:border-[#861211]/30 transition-all duration-500 rounded-tr-[2.5rem]" />
+
+          {/* Chat History Area */}
+          <div className="h-[70vh] max-h-[750px] overflow-y-auto p-8 md:p-12 space-y-8">
             {messages.map((msg, i) => (
-              // FIX: Pass the formatted text directly to dangerouslySetInnerHTML
               <ChatBubble 
                 key={i} 
                 isUser={msg.isUser} 
                 dangerouslySetInnerHTML={{ __html: msg.text }} 
+                /* Note: Ensure your ChatBubble component handles:
+                   isUser ? bg-[#861211] text-white : bg-[#0E2931]/5 text-[#0E2931]
+                */
               />
             ))}
             
-            {/* Loading Indicator */}
             {loading && (
-              <ChatBubble isUser={false}>
-                  <LoadingDots />
-              </ChatBubble>
+              <div className="flex justify-start">
+                 <div className="bg-[#0E2931]/5 px-6 py-4 rounded-2xl">
+                    <LoadingDots />
+                 </div>
+              </div>
             )}
             
-            {/* Scroll Anchor */}
-            <div ref={messagesEndRef} className="pt-2" />
+            <div ref={messagesEndRef} className="pt-4" />
           </div>
 
-          {/* Chat Input Area (Bottom docked) */}
-          <div className="border-t border-slate-200">
+          {/* Chat Input Area: Anchored at bottom with Soft Bone background */}
+          <div className="bg-[#E2E2E0]/30 backdrop-blur-md border-t border-[#0E2931]/5 p-6">
             <ChatInput 
               onSend={sendMessage} 
               onFileUpload={handleFileUpload}
               disabled={loading} 
+              /* Note: Ensure ChatInput button uses bg-[#861211] (Crimson) 
+                 and text-[#E2E2E0] (Bone)
+              */
             />
           </div>
           
         </div>
+
+        {/* Footer info in Deep Teal (#0E2931) */}
+        <p className="text-center mt-8 text-[10px] uppercase tracking-[0.3em] font-bold text-[#0E2931]/40">
+           Engineered Resilience Module • Secure Session
+        </p>
       </div>
     </div>
   )

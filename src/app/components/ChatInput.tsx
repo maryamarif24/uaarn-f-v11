@@ -1,74 +1,64 @@
-'use client'
-import { useState } from 'react'
-import { FiSend, FiPaperclip } from 'react-icons/fi'
+"use client";
+import { FiSend, FiPaperclip } from 'react-icons/fi';
+import { useState } from 'react'; // Standard React hook
 
 interface ChatInputProps {
-  onSend: (text: string) => Promise<void>
-  onFileUpload: (file: File) => Promise<void>
-  disabled: boolean
+  onSend: (message: string) => Promise<void>;
+  onFileUpload: (file: File) => void;
+  disabled: boolean;
 }
 
 export default function ChatInput({ onSend, onFileUpload, disabled }: ChatInputProps) {
-  const [input, setInput] = useState('')
+  // FIXED: Changed useLocalState to useState
+  const [input, setInput] = useState(''); 
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!input.trim() || disabled) return
-    await onSend(input.trim())
-    setInput('')
+    e.preventDefault();
+    if (!input.trim() || disabled) return;
+    await onSend(input.trim());
+    setInput(''); // Clears input after successful transmission
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
+    const file = e.target.files?.[0];
     if (file) {
-      onFileUpload(file)
-      // Reset the input value so the same file can be selected again
-      e.target.value = '' 
+      onFileUpload(file);
+      e.target.value = ''; // Reset to allow re-uploading same file
     }
   }
 
   return (
-    // Updated padding and background to match the chat container border area
-    <form onSubmit={handleSubmit} className="p-4 bg-slate-50"> 
-      <div className="flex gap-3 max-w-4xl mx-auto items-center">
-        
-        {/* File Upload Button (Paperclip) */}
-        <label 
-            className={`cursor-pointer flex-shrink-0 p-2 rounded-full ${disabled ? 'opacity-50' : 'hover:bg-slate-100 transition'}`}
-        >
-          <FiPaperclip className="w-6 h-6 text-slate-500 hover:text-blue-600 transition" />
-          <input
-            type="file"
-            // Ensure appropriate file types for CV/documents
-            accept=".pdf,.doc,.docx,.txt" 
-            className="hidden"
-            onChange={handleFileChange}
-            disabled={disabled}
-          />
-        </label>
-
-        {/* Text Input Field */}
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Ask about career, CV, freelancing, roadmap..."
-          // Updated styling for theme consistency
-          className="flex-1 px-5 py-3 border border-slate-300 bg-white rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150"
-          disabled={disabled}
+    <form onSubmit={handleSubmit} className="max-w-4xl mx-auto flex gap-4 items-center">
+      {/* File Upload: Mid-Teal accent with Bone White background */}
+      <label className={`cursor-pointer p-3 rounded-xl bg-[#E2E2E0]/30 ${disabled ? 'opacity-30' : 'hover:bg-[#E2E2E0]/60 transition'}`}>
+        <FiPaperclip className="w-5 h-5 text-[#0E2931]/40" />
+        <input 
+          type="file" 
+          className="hidden" 
+          disabled={disabled} 
+          onChange={handleFileChange} 
+          accept=".pdf,.doc,.docx,.txt"
         />
+      </label>
 
-        {/* Send Button (Color Correction Applied) */}
-        <button
-          type="submit"
-          disabled={disabled || !input.trim()}
-          // CORRECTED: Using blue-600 for the primary button color
-          className="px-4 py-2 sm:px-6 sm:py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 transition duration-150 shadow-md"
-        >
-          <FiSend size={18} />
-          <span className="hidden sm:inline font-medium">Send</span>
-        </button>
-      </div>
+      {/* Main Input: Bone White theme with Deep Teal text */}
+      <input
+        type="text"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        placeholder="Query the Resilience Network..."
+        className="flex-1 px-6 py-4 bg-[#E2E2E0]/20 border border-[#0E2931]/5 rounded-full focus:outline-none focus:ring-2 focus:ring-[#861211]/20 focus:bg-white text-[#0E2931] font-medium transition-all"
+        disabled={disabled}
+      />
+
+      {/* Send Button: Crimson accent matching UAARN palette */}
+      <button
+        type="submit"
+        disabled={disabled || !input.trim()}
+        className="p-4 bg-[#861211] text-white rounded-full hover:bg-[#6a0e0d] disabled:opacity-30 transition-all shadow-xl shadow-[#861211]/20 active:scale-95"
+      >
+        <FiSend size={20} />
+      </button>
     </form>
-  )
+  );
 }

@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { Send, Brain, Sparkles, CheckCircle, AlertCircle } from "lucide-react";
 
-
 export default function QuizPage() {
     type Quiz = {
         question: string;
@@ -25,7 +24,7 @@ export default function QuizPage() {
         if (!topic.trim()) return;
 
         setMessages((prev) => [...prev, { role: "user", content: topic }]);
-        setTopic(""); 
+        setTopic("");
         setLoading(true);
 
         try {
@@ -73,33 +72,38 @@ export default function QuizPage() {
     };
 
     return (
-        
-        <div className="bg-slate-50 min-h-screen">
-            <div className="max-w-4xl mx-auto px-4 pt-10 pb-20">
-                
-                
-                <div className="bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-200">
-                    
-                    
-                    <div className="border-b border-slate-200 px-6 py-4 flex justify-between items-center bg-white">
-                        <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-                            <Brain className="w-6 h-6 text-blue-600" />
-                            AI Quiz Generator
+        <div className="bg-[#E2E2E0] min-h-screen selection:bg-[#861211]/20 font-sans">
+            <div className="max-w-5xl mx-auto px-4 pt-10 pb-20">
+
+                {/* --- CONTAINER HEIGHT UPDATED TO 85vh --- */}
+                <div className="bg-white rounded-[2.5rem] shadow-2xl shadow-[#0E2931]/5 overflow-hidden border border-[#0E2931]/5 flex flex-col h-[85vh]">
+
+                    {/* Toolbar */}
+                    <div className="border-b border-[#0E2931]/10 px-8 py-5 flex justify-between items-center bg-white">
+                        <h2 className="text-xl font-black text-[#0E2931] uppercase tracking-tighter flex items-center gap-3">
+                            <div className="p-2 bg-[#0E2931] rounded-xl text-white shadow-lg">
+                                <Brain className="w-5 h-5" />
+                            </div>
+                            Neural Assessment
                         </h2>
                         <div className="flex items-center gap-4">
-                            <span className="text-sm text-slate-500 hidden sm:inline">
-                                Instant Learning Check
+                            <span className="text-[10px] font-black uppercase tracking-widest text-[#2B7574] animate-pulse">
+                                System Active
                             </span>
                         </div>
                     </div>
 
-                    
-                    <div className="h-[75vh] max-h-[800px] overflow-y-auto p-6 md:p-8 space-y-6">
+                    {/* Chat/Content Area */}
+                    <div className="flex-1 overflow-y-auto p-6 md:p-10 space-y-8 bg-[#E2E2E0]/10">
                         {messages.length === 0 && (
-                            <p className="text-center text-slate-400 mt-10 flex justify-center items-center gap-2">
-                                <Sparkles className="w-4 h-4 text-yellow-500" />
-                                Type a topic to generate an AI quiz
-                            </p>
+                            <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
+                                <div className="w-20 h-20 bg-white rounded-3xl shadow-xl flex items-center justify-center text-[#0E2931]/10 border border-[#0E2931]/5">
+                                    <Sparkles size={40} />
+                                </div>
+                                <p className="text-[#0E2931]/30 font-black uppercase tracking-[0.3em] text-xs">
+                                    Initialize topic for evaluation
+                                </p>
+                            </div>
                         )}
 
                         {messages.map((msg, i) => (
@@ -108,91 +112,98 @@ export default function QuizPage() {
                                 className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                             >
                                 <div
-                                    className={`max-w-[85%] rounded-xl text-sm leading-relaxed shadow-sm transition duration-150 ${
+                                    className={`max-w-[90%] rounded-[1.5rem] leading-relaxed shadow-sm transition-all duration-300 ${
                                         msg.role === "user"
-                                            ? "bg-blue-600 text-white rounded-tr-sm px-4 py-3" 
-                                            : "bg-slate-100 text-slate-800 rounded-tl-sm p-4"
+                                            ? "bg-[#861211] text-white rounded-tr-sm px-6 py-4 shadow-lg shadow-[#861211]/20"
+                                            : "bg-white border border-[#0E2931]/5 text-[#0E2931] rounded-tl-sm p-6 md:p-8"
                                     }`}
                                 >
                                     {msg.role === "user" ? (
-                                        msg.content
+                                        <span className="font-bold uppercase tracking-widest text-xs">{msg.content}</span>
                                     ) : Array.isArray(msg.content) ? (
-                                        
-                                        <div className="space-y-4">
-                                            <p className="text-base font-semibold text-slate-900 mb-2">
-                                                Quiz generated for:{" "}
-                                                {messages[i - 1] && messages[i - 1].role === "user"
-                                                ? String(messages[i - 1].content)
-                                                : "Topic"}
-                                            </p>
-                                            
+                                        <div className="space-y-8">
+                                            <div className="flex items-center gap-3 pb-4 border-b border-[#0E2931]/5">
+                                                <div className="w-2 h-2 rounded-full bg-[#2B7574]" />
+                                                <p className="text-[11px] font-black uppercase tracking-widest text-[#0E2931]/40">
+                                                    Results for tactical topic: <span className="text-[#0E2931]">
+                                                        {messages[i - 1]?.role === "user" ? String(messages[i - 1].content) : "Node Input"}
+                                                    </span>
+                                                </p>
+                                            </div>
+
                                             {msg.content.map((q, idx) => (
-                                                <div key={idx} className="border border-slate-200 rounded-xl p-4 bg-white shadow-sm"> 
-                                                    <h3 className="font-bold text-slate-800 mb-3">
-                                                        {idx + 1}. {q.question}
+                                                <div key={idx} className="relative group">
+                                                    <h3 className="font-black text-lg text-[#0E2931] uppercase tracking-tighter mb-5 flex gap-3">
+                                                        <span className="text-[#861211]">{idx + 1}.</span>
+                                                        {q.question}
                                                     </h3>
-                                                    <ul className="space-y-2">
+                                                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                                         {q.options.map((opt, i2) => (
                                                             <li
                                                                 key={i2}
-                                                                className="px-3 py-2 border border-slate-300 rounded-lg hover:bg-blue-50 cursor-pointer text-slate-700 text-sm transition"
+                                                                className="px-5 py-4 border-2 border-[#E2E2E0] rounded-2xl hover:border-[#2B7574] hover:bg-[#E2E2E0]/20 cursor-pointer text-[#0E2931] text-sm font-medium transition-all"
                                                             >
                                                                 {opt}
                                                             </li>
                                                         ))}
                                                     </ul>
-                                                    <p className="text-xs text-slate-500 mt-3 pt-2 border-t border-dashed border-slate-200 flex items-center gap-1">
-                                                        <CheckCircle className="w-4 h-4 text-green-600" />
-                                                        Correct Answer: <b className="text-slate-800">{q.answer}</b>
-                                                    </p>
+                                                    <div className="mt-5 pt-4 border-t border-dashed border-[#0E2931]/10 flex items-center justify-between">
+                                                        <div className="flex items-center gap-2">
+                                                            <CheckCircle className="w-4 h-4 text-[#2B7574]" />
+                                                            <span className="text-[10px] font-black uppercase tracking-widest text-[#0E2931]/30">Key Phrase Verify:</span>
+                                                            <b className="text-sm font-black text-[#0E2931] uppercase tracking-tighter">{q.answer}</b>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             ))}
                                         </div>
                                     ) : (
-                                        
-                                        <div className="whitespace-pre-wrap text-slate-500 flex items-center gap-2">
-                                            <AlertCircle className="w-4 h-4 text-red-600" />
-                                            <span className="text-red-600">{msg.content}</span>
+                                        <div className="flex items-center gap-3 text-[#861211] font-black uppercase text-[10px] tracking-widest bg-red-50 p-4 rounded-xl border border-red-100">
+                                            <AlertCircle className="w-5 h-5" />
+                                            <span>{msg.content}</span>
                                         </div>
                                     )}
                                 </div>
                             </div>
                         ))}
 
-                        
                         {loading && (
                             <div className="flex justify-start">
-                                <div className="bg-slate-100 text-slate-500 px-4 py-3 rounded-xl rounded-tl-sm text-sm animate-pulse">
-                                    Generating quiz...
+                                <div className="bg-white border border-[#0E2931]/5 text-[#0E2931]/40 px-8 py-5 rounded-[1.5rem] rounded-tl-sm text-[10px] font-black uppercase tracking-[0.3em] animate-pulse shadow-sm flex items-center gap-3">
+                                    <Sparkles size={14} className="text-[#861211]" />
+                                    Synthesizing Quiz Data...
                                 </div>
                             </div>
                         )}
-                       
-                        <div className="pt-2" /> 
+                        <div className="pt-2" />
                     </div>
 
-                    
-                    <div className="border-t border-slate-200 p-4 bg-slate-50">
-                        <div className="flex items-center gap-3 max-w-4xl mx-auto">
-                            <input
-                                type="text"
-                                value={topic}
-                                onChange={(e) => setTopic(e.target.value)}
-                                onKeyDown={handleKeyPress}
-                                placeholder="Enter a topic (e.g., Photosynthesis, JavaScript Basics)"
-                                
-                                className="flex-1 px-5 py-3 border border-slate-300 bg-white rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150"
-                                disabled={loading}
-                            />
+                    {/* Input Area */}
+                    <div className="border-t border-[#0E2931]/5 p-6 bg-white">
+                        <div className="flex items-center gap-4 max-w-4xl mx-auto">
+                            <div className="flex-1 relative">
+                                <input
+                                    type="text"
+                                    value={topic}
+                                    onChange={(e) => setTopic(e.target.value)}
+                                    onKeyDown={handleKeyPress}
+                                    placeholder="ENTER TOPIC FOR NEURAL ASSESSMENT..."
+                                    className="w-full px-8 py-5 bg-[#E2E2E0]/30 border border-[#0E2931]/5 rounded-full focus:outline-none focus:ring-2 focus:ring-[#861211]/20 focus:bg-white text-[#0E2931] text-[11px] font-black tracking-widest placeholder-[#0E2931]/30 transition-all"
+                                    disabled={loading}
+                                />
+                                <Brain className="absolute right-6 top-1/2 -translate-y-1/2 text-[#0E2931]/10 w-5 h-5" />
+                            </div>
                             <button
                                 onClick={handleSend}
                                 disabled={loading || !topic.trim()}
-                                
-                                className="px-4 py-2 sm:px-4 sm:py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full transition disabled:opacity-50 shadow-md"
+                                className="p-5 bg-[#861211] hover:bg-[#6a0e0d] text-white rounded-full transition-all disabled:opacity-30 shadow-xl shadow-[#861211]/20 active:scale-95"
                             >
-                                <Send size={18} />
+                                <Send size={20} />
                             </button>
                         </div>
+                        <p className="text-center mt-4 text-[9px] font-black uppercase tracking-[0.4em] text-[#0E2931]/20">
+                            UAARN Labs • Secure Evaluation Protocol Operational
+                        </p>
                     </div>
                 </div>
             </div>
