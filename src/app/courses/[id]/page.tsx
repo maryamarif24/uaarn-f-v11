@@ -121,7 +121,7 @@ export default function CourseDetailPage() {
               <div className="mb-8">
                 <div className="flex items-center gap-3 mb-4">
                    <div className="w-1.5 h-1.5 rounded-full bg-[#2B7574] animate-pulse" />
-                   <span className="text-[9px] font-black uppercase tracking-[0.3em] text-[#0E2931]/40 tracking-widest">Active Intelligence Path</span>
+                   <span className="text-[9px] font-black uppercase text-[#0E2931]/40 tracking-widest">Active Intelligence Path</span>
                 </div>
                 <h1 className="text-3xl lg:text-4xl font-black text-[#0E2931] uppercase tracking-tighter leading-tight mb-6">
                   {course.title}
