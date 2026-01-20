@@ -40,26 +40,38 @@ export default function CoursesPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-100 py-20 px-8">
-      <div className="max-w-6xl mx-auto text-center mb-12">
-        <h2 className="text-4xl font-bold text-slate-900">
-          Explore <span className="text-blue-600">Top Courses</span>
-        </h2>
-        <p className="text-slate-600 mt-3">
-          Learn from world-class platforms like Coursera — and let AI summarize
-          your lessons in seconds.
-        </p>
+    /* Background: Soft Bone White (#E2E2E0) - Matched to Home Page */
+    <div className="min-h-screen bg-[#E2E2E0] py-20 px-8 selection:bg-[#861211]/20">
+      
+      {/* Centered Heading Container */}
+      <div className="max-w-6xl mx-auto text-center mb-16 flex flex-col items-center">
+        <div className="max-w-2xl">
+          <h2 className="text-4xl md:text-5xl font-black text-[#0E2931] uppercase tracking-tighter">
+            Explore <span className="text-[#861211]">Top Courses</span>
+          </h2>
+          <p className="text-[#0E2931]/60 mt-4 text-lg font-medium italic">
+            Learn from world-class platforms like Coursera — and let AI summarize
+            your lessons in seconds.
+          </p>
+        </div>
+        
+        {/* Centered Decorative Divider */}
+        <div className="mt-8 h-[2px] w-24 bg-[#0E2931]/10"></div>
       </div>
 
       {loading ? (
-        <p className="text-center text-slate-500">Loading courses...</p>
+        <p className="text-center text-[#0E2931]/50 font-medium animate-pulse">
+          Synchronizing courses...
+        </p>
       ) : courses.length === 0 ? (
-        <p className="text-center text-slate-500">
+        <p className="text-center text-[#0E2931]/50 font-medium">
           No courses added yet. Please check back soon.
         </p>
       ) : (
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
+        /* Responsive Grid */
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
           {courses.map((course) => (
+            /* Note: Ensure CourseCard uses high-fidelity styling to match */
             <CourseCard
               key={course._id}
               title={course.title}
@@ -70,6 +82,13 @@ export default function CoursesPage() {
           ))}
         </div>
       )}
+
+      {/* Subtle Bottom Branding matching Home Page */}
+      <div className="mt-20 flex justify-center opacity-20">
+        <div className="text-[10px] font-black uppercase tracking-[0.4em] text-[#0E2931]">
+          UAARN Educational Resilience Network
+        </div>
+      </div>
     </div>
   );
 }

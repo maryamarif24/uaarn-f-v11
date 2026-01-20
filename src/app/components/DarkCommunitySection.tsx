@@ -4,95 +4,117 @@ import Link from 'next/link';
 
 const DarkCommunitySection: React.FC = () => {
   return (
-    <div className="min-h-screen bg-slate-100 py-16 px-4 sm:px-6 lg:px-8 text-blue-600">
+    /* Main Page Background: Bone White (#E2E2E0) */
+    <div className="min-h-screen bg-[#E2E2E0] py-18 px-4 sm:px-6 lg:px-8 selection:bg-[#861211]/20">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <header className="mb-12 text-center">
-          <h1 className="text-3xl sm:text-4xl font-sans font-bold text-slate-900 mb-4">
-            Join the <span className="text-blue-600">Community</span>
+        
+        {/* Header Section */}
+        <header className="mb-20 text-center relative">
+          <div className="inline-block px-4 py-1 mb-6 border border-[#0E2931]/10 rounded-full text-[10px] font-black uppercase tracking-[0.4em] text-[#0E2931]/60">
+            Collective Intelligence
+          </div>
+          <h1 className="text-4xl sm:text-5xl font-black text-[#0E2931] mb-6 uppercase tracking-tighter leading-none">
+            Join the <span className="text-[#861211] italic">Community</span>
           </h1>
-          <p className="text-base sm:text-lg text-slate-600 mt-7">
+          <div className="w-24 h-1 bg-[#861211] mx-auto mb-8" />
+          <p className="max-w-2xl mx-auto text-base sm:text-lg text-[#0E2931]/70 font-medium leading-relaxed">
             <Link href="/">
-              <span className="font-semibold hover:text-blue-600">UAARN </span>
+              <span className="font-black hover:text-[#861211] transition-colors cursor-pointer">UAARN </span>
             </Link>
-            is the trusted website for learners.
+            is the definitive ecosystem for resilient AI development and strategic collaboration.
           </p>
         </header>
 
-        {/* Stats Boxes */}
-        <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-10">
-          {/* Box 1 */}
-          <div className="flex flex-col items-center text-center bg-white shadow-lg rounded-2xl border border-slate-200 p-8 w-full md:w-1/3">
-            <p className="font-sans text-lg sm:text-xl font-bold">
-              Among 1% of Top Developers
-            </p>
-            <p className="text-4xl sm:text-5xl mt-5 font-extrabold text-black">
-              500+
-            </p>
-            <p>Stars on GitHub</p>
-            <div className="flex items-center justify-center gap-4 mt-5">
-              <a href="https://github.com/maryamarif24">
-                <Image
-                  src="/maryam.jpeg"
-                  alt="Maryam"
-                  width={50}
-                  height={50}
-                  className="rounded-full"
-                />
-              </a>
-              <a href="https://github.com/TahirahWebDev">
-                <Image
-                  src="/tahira.jpg"
-                  alt="Tahirah"
-                  width={50}
-                  height={50}
-                  className="rounded-full"
-                />
-              </a>
-              <a href="https://github.com/Mehak-Akram">
-                <Image
-                  src="/mehak.jpg"
-                  alt="Mehak"
-                  width={50}
-                  height={50}
-                  className="rounded-full"
-                />
-              </a>
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          
+          {/* Card 1: Developers */}
+          <div className="relative group overflow-hidden bg-[#0E2931] rounded-[2.5rem] p-10 text-[#E2E2E0] shadow-2xl transition-transform hover:-translate-y-2 duration-500">
+            {/* Background Organic Shape */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#2B7574]/20 blur-3xl rounded-full" />
+            
+            <div className="relative z-10 flex flex-col items-center text-center h-full">
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#E2E2E0]/50 mb-4">
+                Global Standing
+              </p>
+              <p className="font-bold text-lg leading-tight mb-6">
+                Among 1% of <br/>Top Developers
+              </p>
+              <p className="text-5xl font-black text-[#861211] mb-2 tracking-tighter">
+                500+
+              </p>
+              <p className="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-8">Stars on GitHub</p>
+              
+              <div className="flex -space-x-3 mt-auto">
+                {['maryam.jpeg', 'tahira.jpg', 'mehak.jpg'].map((img, i) => (
+                  <div key={i} className="relative w-12 h-12 rounded-full border-4 border-[#0E2931] overflow-hidden hover:z-20 hover:scale-110 transition-all cursor-pointer">
+                    <Image
+                      src={`/${img}`}
+                      alt="Contributor"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Box 2 */}
-          <div className="flex flex-col items-center text-center bg-white shadow-lg rounded-2xl border border-slate-200 p-8 w-full md:w-1/3">
-            <p className="font-sans text-lg sm:text-xl font-bold">
-              50+ Satisfied Users
-            </p>
-            <p className="text-4xl sm:text-5xl mt-5 font-extrabold text-black">
-              50+
-            </p>
-            <p>Registered Users</p>
-            <div className="bg-blue-600 px-5 py-2 mt-5 text-[1rem] font-sans rounded-2xl text-white hover:bg-blue-700 transition">
-              <a href="/contact">Register Yourself</a>
+          {/* Card 2: Satisfied Users (The "Red Island" Card) */}
+          <div className="relative group overflow-hidden bg-[#861211] rounded-[2.5rem] p-10 text-white shadow-2xl transition-transform hover:-translate-y-2 duration-500">
+            {/* Background Texture Overlay */}
+            <div className="absolute inset-0 opacity-10 mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
+            
+            <div className="relative z-10 flex flex-col items-center text-center h-full">
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/60 mb-4">
+                Network Growth
+              </p>
+              <p className="font-bold text-lg leading-tight mb-6">
+                Active Protocol <br/>Participants
+              </p>
+              <p className="text-5xl font-black text-[#E2E2E0] mb-2 tracking-tighter">
+                50+
+              </p>
+              <p className="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-8">Registered Users</p>
+              
+              <Link href="/contact" className="w-full">
+                <div className="bg-[#E2E2E0] text-[#861211] py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-white transition-colors text-center">
+                  Register Yourself
+                </div>
+              </Link>
             </div>
           </div>
 
-          {/* Box 3 */}
-          <div className="flex flex-col items-center text-center bg-white shadow-lg rounded-2xl border border-slate-200 p-8 w-full md:w-1/3">
-            <p className="font-sans text-lg sm:text-xl font-bold">
-              1K+ LinkedIn Followers
-            </p>
-            <p className="text-4xl sm:text-5xl mt-5 font-extrabold text-black">
-              1K+
-            </p>
-            <p>LinkedIn Followers</p>
-            <div className="bg-blue-600 px-5 py-2 mt-5 text-[1rem] font-sans rounded-2xl text-white hover:bg-blue-700 transition">
-              <a
-                href="https://www.linkedin.com/company/nexa-agent/"
-                target="_blank"
+          {/* Card 3: LinkedIn */}
+          <div className="relative group overflow-hidden bg-[#12484C] rounded-[2.5rem] p-10 text-[#E2E2E0] shadow-2xl transition-transform hover:-translate-y-2 duration-500">
+            {/* Layered Wave Effect */}
+            <div className="absolute bottom-0 left-0 w-full h-1/2 bg-[#2B7574]/20" style={{ clipPath: 'ellipse(100% 50% at 50% 100%)' }} />
+            
+            <div className="relative z-10 flex flex-col items-center text-center h-full">
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#E2E2E0]/50 mb-4">
+                Social Presence
+              </p>
+              <p className="font-bold text-lg leading-tight mb-6">
+                Professional <br/>Network Reach
+              </p>
+              <p className="text-5xl font-black text-[#E2E2E0] mb-2 tracking-tighter">
+                1K+
+              </p>
+              <p className="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-8">LinkedIn Followers</p>
+              
+              <a 
+                href="https://www.linkedin.com/company/nexa-agent/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-full mt-auto"
               >
-                LinkedIn
+                <div className="border-2 border-[#E2E2E0]/20 hover:border-[#E2E2E0] py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all text-center">
+                  LinkedIn
+                </div>
               </a>
             </div>
           </div>
+
         </div>
       </div>
     </div>

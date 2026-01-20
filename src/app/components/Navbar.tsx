@@ -1,93 +1,94 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image"; 
 import { Menu, X } from "lucide-react";
 import { useUser, SignInButton, UserButton } from "@clerk/nextjs";
 import UpgradeButton from "./upgradeButton";
 
-export default function Navbar() {
+// Update the function signature to accept onOpenPlans
+export default function Navbar({ onOpenPlans }: { onOpenPlans: () => void }) {
   const { isSignedIn } = useUser();
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="flex items-center justify-between px-6 md:px-10 py-4 bg-white border-b border-slate-200 shadow-sm sticky top-0 z-50">
-     
-      <div className="text-center">
-        <Link href="/" className="text-4xl font-bold text-blue-600">
-          UAARN
-        </Link>
-        <p className="font-sans text-[70%]">Universal Adaptive AI Resilience Network</p>
-      </div>
-
-  
-      <div className="hidden md:flex items-center space-x-6 text-slate-700 text-lg">
-        <Link href="/" className="hover:text-blue-600 transition">Home</Link>
-        <Link href="/about" className="hover:text-blue-600 transition">About</Link>
-        <Link href="/courses" className="hover:text-blue-600 transition">Courses</Link>
-        <Link href="/ask" className="hover:text-blue-600 transition">Ask AI</Link>
-        <Link href="/ai-mentor" className="hover:text-blue-600 transition">AI-Mentor</Link>
-        <Link href="/contact" className="hover:text-blue-600 transition">Contact</Link>
-        <Link href="/role-selection" className="hover:text-blue-600 transition">Dashboard</Link>
-      </div>
-
+    <nav className="flex items-center justify-between px-6 md:px-10 py-4 bg-[#E2E2E0] border-b border-[#0E2931]/10 sticky top-0 z-50 backdrop-blur-md">
       
-      <div className="flex items-center gap-4">
-        
-        <UpgradeButton />
+      {/* LOGO SECTION */}
+      <div className="flex items-center gap-3">
+        <Link href="/" className="flex items-center gap-3 group">
+          <div className="relative w-36 h-12 overflow-hidden rounded-xl p-1.5 transition-all">
+            <Image 
+              src="/logo.png" 
+              alt="UAARN Logo"
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
+        </Link>
+      </div>
 
-        
-        <div className="hidden md:flex">
+      {/* DESKTOP NAVIGATION */}
+      <div className="hidden lg:flex items-center space-x-10 text-[#0E2931] text-[13px] font-black uppercase tracking-[0.1em]">
+        <Link href="/" className="hover:text-[#861211] transition-all duration-300">Home</Link>
+        <Link href="/about" className="hover:text-[#861211] transition-all duration-300">About</Link>
+        <Link href="/courses" className="hover:text-[#861211] transition-all duration-300">Courses</Link>
+        <Link href="/ask" className="hover:text-[#861211]">Ask AI</Link>
+        <Link href="/contact" className="hover:text-[#861211] transition-all duration-300">Contact</Link>
+        <Link href="/role-selection" className="bg-[#0E2931] text-white px-5 py-2.5 rounded-full hover:bg-[#12484C] transition-all shadow-md">Dashboard</Link>
+      </div>
+
+      {/* ACTION BUTTONS */}
+      <div className="flex items-center gap-4">
+        <div className="hidden sm:block scale-95">
+            {/* Pass onOpenPlans to UpgradeButton */}
+            <UpgradeButton onClickAction={onOpenPlans} />
+        </div>
+
+        <div className="flex items-center">
           {isSignedIn ? (
-            <UserButton afterSignOutUrl="/" />
+            <div className="border-2 border-[#861211]/20 rounded-full p-0.5 hover:border-[#861211] transition-all">
+              <UserButton afterSignOutUrl="/" />
+            </div>
           ) : (
-            <SignInButton
-              mode="modal"
-            >
-              <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+            <SignInButton mode="modal">
+              <button className="bg-[#861211] hover:bg-[#6a0e0d] text-white px-7 py-3 rounded-full font-black text-[11px] uppercase tracking-widest transition-all shadow-xl shadow-[#861211]/20 active:scale-95">
                 Sign In
               </button>
             </SignInButton>
           )}
         </div>
 
-        
+        {/* MOBILE MENU TOGGLE */}
         <button
-          className="md:hidden text-slate-700"
+          className="lg:hidden text-[#0E2931] p-1 hover:bg-[#0E2931]/5 rounded-lg transition-colors"
           onClick={() => setOpen(!open)}
         >
-          {open ? <X size={26} /> : <Menu size={26} />}
+          {open ? <X size={28} /> : <Menu size={28} />}
         </button>
       </div>
 
-      
+      {/* MOBILE NAVIGATION */}
       {open && (
-        <div className="absolute top-full left-0 w-full bg-white border-t border-slate-200 shadow-md flex flex-col items-center py-6 space-y-4 text-slate-700 font-medium md:hidden transition-all">
-          <Link href="/" className="hover:text-blue-600" onClick={() => setOpen(false)}>Home</Link>
-          <Link href="/about" className="hover:text-blue-600" onClick={() => setOpen(false)}>About</Link>
-          <Link href="/courses" className="hover:text-blue-600" onClick={() => setOpen(false)}>Courses</Link>
-          <Link href="/ask" className="hover:text-blue-600" onClick={() => setOpen(false)}>Ask AI</Link>
-          <Link href="/contact" className="hover:text-blue-600" onClick={() => setOpen(false)}>Contact</Link>
-          <Link href="/role-selection" className="hover:text-blue-600" onClick={() => setOpen(false)}>Dashboard</Link>
+        <div className="absolute top-full left-0 w-full bg-[#E2E2E0] border-t border-[#0E2931]/10 shadow-2xl flex flex-col items-center py-12 space-y-8 text-[#0E2931] lg:hidden animate-in fade-in slide-in-from-top-5 duration-300">
+          <Link href="/" className="text-lg font-black uppercase tracking-[0.2em] hover:text-[#861211]" onClick={() => setOpen(false)}>Home</Link>
+          <Link href="/about" className="text-lg font-black uppercase tracking-[0.2em] hover:text-[#861211]" onClick={() => setOpen(false)}>About</Link>
+          <Link href="/courses" className="text-lg font-black uppercase tracking-[0.2em] hover:text-[#861211]" onClick={() => setOpen(false)}>Courses</Link>
+          <Link href="/ask" className="text-lg font-black uppercase tracking-[0.2em] text-[#2B7574]" onClick={() => setOpen(false)}>Ask AI</Link>
+          <Link href="/contact" className="text-lg font-black uppercase tracking-[0.2em] hover:text-[#861211]" onClick={() => setOpen(false)}>Contact</Link>
+          <Link href="/role-selection" className="text-lg font-black uppercase tracking-[0.2em] hover:text-[#861211]" onClick={() => setOpen(false)}>Dashboard</Link>
 
-          
-          <div className="pt-2">
-            <UpgradeButton />
-          </div>
-
-          
-          <div className="pt-3 border-t border-slate-200 w-10/12 text-center">
-            {isSignedIn ? (
-              <div className="flex justify-center">
-                <UserButton afterSignOutUrl="/" />
-              </div>
-            ) : (
-              <SignInButton
-                mode="modal"
-              >
-                <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
-                  Sign In
-                </button>
-              </SignInButton>
+          <div className="pt-6 flex flex-col items-center gap-6 w-full px-10">
+            <div className="w-full h-px bg-[#0E2931]/10" />
+            {/* Pass onOpenPlans to UpgradeButton in Mobile View */}
+            <UpgradeButton onClickAction={onOpenPlans} />
+            {!isSignedIn && (
+                <SignInButton mode="modal">
+                    <button className="w-full bg-[#0E2931] text-white py-5 rounded-full font-black text-sm uppercase tracking-[0.2em]">
+                        Initialize Session
+                    </button>
+                </SignInButton>
             )}
           </div>
         </div>

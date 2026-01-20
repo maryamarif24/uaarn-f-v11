@@ -1,33 +1,31 @@
 "use client";
 
-import { useState } from "react";
-import PlansModal from "./PlansModal";
 import { Crown } from "lucide-react";
 
-export default function UpgradeButton() {
-  const [showModal, setShowModal] = useState(false);
-
+export default function UpgradeButton({ onClickAction }: { onClickAction: () => void }) {
   return (
-    <>
-      <button
-        onClick={() => setShowModal(true)}
-        className="relative inline-flex items-center gap-2 px-5 py-2.5 
-                   rounded-full border border-white bg-gradient-to-r 
-                   from-blue-500 via-purple-700 to-pink-700 
-                   text-white font-semibold text-base tracking-wide
-                   shadow-lg shadow-slate-300 transition-all duration-300 
-                   hover:shadow-xl hover:scale-105 
-                   hover:from-blue-400 hover:via-purple-600 hover:to-pink-600 
-                   focus:outline-none focus:ring-2 focus:ring-purple-300"
-      >
-        <Crown size={18} className="text-yellow-300 drop-shadow-sm" />
+    <button
+      onClick={onClickAction}
+      className="relative group inline-flex items-center gap-2 px-5 py-2.5 
+                 rounded-full border border-[#0E2931]/10 bg-white
+                 text-[#0E2931] font-black text-[11px] uppercase tracking-[0.2em]
+                 shadow-lg shadow-[#0E2931]/5 transition-all duration-500 
+                 hover:text-white hover:border-transparent overflow-hidden active:scale-95"
+    >
+      {/* 1. THE GRADIENT MIXTURE LAYER (Hidden by default, appears on hover) */}
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-[#0E2931] via-[#2B7574] to-[#861211] z-0" />
+      
+      {/* 2. CONTENT LAYER (Ensures icons/text stay above the gradient) */}
+      <div className="relative z-10 flex items-center gap-2">
+        <Crown 
+          size={16} 
+          className="text-[#861211] group-hover:text-white transition-colors duration-300" 
+        />
         <span>Pricing</span>
+      </div>
 
-        {/* Glow effect */}
-        <span className="absolute inset-0 rounded-full bg-white/10 opacity-0 group-hover:opacity-100 transition-all duration-300"></span>
-      </button>
-
-      {showModal && <PlansModal onCloseAction={() => setShowModal(false)} />}
-    </>
+      {/* 3. REFLECTIVE GLOW EFFECT */}
+      <span className="absolute inset-0 rounded-full bg-white/10 opacity-0 group-hover:opacity-20 transition-all duration-500 scale-110 blur-sm"></span>
+    </button>
   );
 }

@@ -9,27 +9,16 @@ interface ChatBubbleProps {
 }
 
 export default function ChatBubble({ children, isUser, dangerouslySetInnerHTML }: ChatBubbleProps) {
-  
-  // 1. Conditional CSS Classes based on isUser prop
   const bubbleClasses = isUser
-    ? "bg-blue-600 text-white rounded-tr-sm self-end" // User: Blue, right-aligned
-    : "bg-slate-100 text-slate-800 rounded-tl-sm self-start"; // AI: Light neutral, left-aligned
-
-  const layoutClasses = isUser
-    ? "justify-end" // Aligns message container to the right
-    : "justify-start"; // Aligns message container to the left
+    ? "bg-[#861211] text-white rounded-tr-sm self-end shadow-lg shadow-[#861211]/20" 
+    : "bg-white border border-[#0E2931]/5 text-[#0E2931] rounded-tl-sm self-start shadow-sm";
 
   return (
-    <div className={`flex w-full mt-4 ${layoutClasses}`}>
-      <div 
-        className={`max-w-[80%] md:max-w-[70%] p-4 text-sm rounded-xl shadow-sm transition duration-150 ${bubbleClasses}`}
-      >
-        {/* 2. Rendering Content */}
+    <div className={`flex w-full mt-6 ${isUser ? "justify-end" : "justify-start"}`}>
+      <div className={`max-w-[85%] md:max-w-[75%] p-5 text-sm rounded-[1.5rem] leading-relaxed font-medium ${bubbleClasses}`}>
         {dangerouslySetInnerHTML ? (
-          // If formatted HTML is provided, render it using dangerouslySetInnerHTML
-          <div dangerouslySetInnerHTML={dangerouslySetInnerHTML} />
+          <div className="prose prose-sm prose-invert max-w-none" dangerouslySetInnerHTML={dangerouslySetInnerHTML} />
         ) : (
-          // Otherwise, render regular children (e.g., LoadingDots component)
           children
         )}
       </div>
